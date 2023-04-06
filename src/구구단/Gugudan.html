@@ -1,0 +1,48 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-sidth, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 구구단 </title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> <!--뷰를 여기서 쓸 수 있음 -->
+</head>
+<body>
+    <div id="root">
+        <div> {{first}} 곱하기 {{second}} 은?</div> <!-- 중괄호로 텍스트 사용 가능 -->
+        <form v-on:submit="onSubmitForm"> <!-- form 태그에서는 click이 아닌 submit 이라서 ! -->
+            <input type="number" v-model="value" ref="answer"> <!-- input의 값을 바꾸면 v-model를 통해 data의 value에 영향을 미침 -->
+            <button type="submit"> 입력 ! </button>
+        </form>
+        <div> {{result}} </div>
+    </div>
+<script>
+    // 바뀌는 부분이 데이터가 됨 ! 즉, 입력값, 정답과땡을 알려주는 부분, 곱하기 수식의 숫자 2개
+    const app = new Vue({
+        el : "#root",
+        data : {
+            first : Math.ceil(Math.random() * 9), // Math.random() * 최대수 : 1 ~ 최대수 만큼 랜덤 수 구함
+            second : Math.ceil(Math.random() * 9),
+            value : '',
+            result : '',
+        },
+        methods: {
+            onSubmitForm(e) {
+                e.preventDefault(); //페이지 새로고침을 막음 > 폼은 기본적으로 새로고침을 하기 때문에
+                if(this.first * this.second === parseInt(this.value))
+                {
+                    this.result = '정답'; // 정답을 맞췄으면 아래의 값을 다시 변경시켜줌
+                    this.first = Math.ceil(Math.random() * 9);
+                    this.second = Math.ceil(Math.random() * 9);
+                    this.value = '';
+                    this.$refs.answer.focus(); //ref가 answer로 되어있는 영역에 포커스 해주는 코드
+                } else {
+                    this.result = '땡';
+                    this.value = '';
+                    this.$refs.answer.focus();
+                }
+            },
+        },
+    })
+</script>
+</body>
+</html>
